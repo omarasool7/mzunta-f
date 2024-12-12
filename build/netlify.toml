@@ -1,0 +1,54 @@
+# Build settings
+[build]
+  publish = "build"  # Directory containing deploy-ready files
+  command = "npm run build"  # Command to build your site
+
+# Redirects
+[[redirects]]
+  from = "/old-path"
+  to = "/new-path"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about"
+  to = "/about-us"
+  status = 302  # Temporary redirect
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/articles/:splat"  # Redirect all blog posts to articles
+  status = 301
+
+[[redirects]]
+  from = "/external"
+  to = "https://external-site.com"
+  status = 302
+  force = true
+  headers = { "X-Frame-Options" = "DENY" }  # Add headers to the redirect
+
+  [[
+redirects
+]]
+  from = "/api/*"
+  to = "/mzunta.netlify/functions/api/:splat"
+  status = 200
+
+# Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Cache-Control = "max-age=0, no-cache, no-store, must-revalidate"
+
+# Functions
+[functions]
+  directory = "functions/"  # Directory for serverless functions
+
+# Environment Variables
+[context.production.environment]
+  NODE_ENV = "production"
+  API_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
